@@ -58,10 +58,13 @@ export default function UploadZone({ onFileReady, disabled }: UploadZoneProps) {
       onDrop={handleDrop}
       onClick={() => !disabled && !loading && inputRef.current?.click()}
       className={`
-        relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed
-        transition-all duration-200 cursor-pointer select-none overflow-hidden
-        ${isDragging ? 'border-orange-400 bg-orange-50' : 'border-gray-300 bg-gray-50 hover:bg-gray-100'}
-        ${disabled ? 'opacity-60 cursor-not-allowed' : ''}
+        relative flex flex-col items-center justify-center
+        rounded-[32px] border transition-all duration-300 cursor-pointer select-none overflow-hidden
+        backdrop-blur-xl
+        ${isDragging
+          ? 'border-[#FDE047] bg-[#FDE047]/10'
+          : 'border-white/20 bg-white/10 hover:bg-white/15 hover:border-white/30'}
+        ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
         ${preview ? 'h-72' : 'h-64'}
       `}
     >
@@ -82,26 +85,32 @@ export default function UploadZone({ onFileReady, disabled }: UploadZoneProps) {
             alt="업로드된 음식 사진"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-            <span className="text-white font-medium text-sm">사진 변경하기</span>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+            <div className="bg-[#FDE047] text-black text-xs font-semibold px-4 py-2 rounded-full">
+              사진 변경하기
+            </div>
           </div>
         </>
       ) : (
-        <div className="flex flex-col items-center gap-3 px-6 text-center">
+        <div className="flex flex-col items-center gap-4 px-6 text-center">
           {loading ? (
-            <div className="w-10 h-10 border-2 border-orange-400 border-t-transparent rounded-full animate-spin" />
+            <div className="w-10 h-10 border-2 border-[#FDE047] border-t-transparent rounded-full animate-spin" />
           ) : (
-            <div className="text-5xl">📷</div>
+            <div className="w-14 h-14 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-2xl animate-float">
+              📷
+            </div>
           )}
-          <p className="text-gray-600 font-medium">
-            {loading ? '이미지 처리 중...' : '음식 사진을 드래그하거나 클릭하여 업로드'}
-          </p>
-          <p className="text-gray-400 text-sm">JPG, PNG, WEBP · 최대 20MB</p>
+          <div>
+            <p className="text-white font-medium text-sm">
+              {loading ? '이미지 처리 중...' : '음식 사진을 드래그하거나 클릭'}
+            </p>
+            <p className="text-white/30 text-xs mt-1">JPG · PNG · WEBP · 최대 20MB</p>
+          </div>
         </div>
       )}
 
       {error && (
-        <div className="absolute bottom-0 left-0 right-0 bg-red-500 text-white text-sm text-center py-2">
+        <div className="absolute bottom-0 left-0 right-0 bg-red-500/80 backdrop-blur-sm text-white text-xs text-center py-2.5 font-medium">
           {error}
         </div>
       )}

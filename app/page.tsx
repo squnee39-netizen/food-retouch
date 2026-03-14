@@ -65,21 +65,39 @@ export default function Home() {
   const hasFile = !!originalBase64;
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50">
-      <div className="max-w-2xl mx-auto px-4 py-10 space-y-8">
-        {/* Header */}
-        <div className="text-center space-y-2">
-          <div className="text-5xl mb-2">🍜</div>
-          <h1 className="text-3xl font-bold text-gray-900">음식 사진 AI 보정</h1>
-          <p className="text-gray-500">
-            메뉴판용 음식 사진을 Gemini AI로 더 맛있게 보정해드려요
+    <main className="min-h-screen bg-[#0A0A0A]">
+
+      {/* ── Liquid Hero Section ── */}
+      <section
+        className="bg-[#FDE047] px-6 pt-10 pb-20"
+        style={{ borderRadius: '0 0 80px 40px' }}
+      >
+        <div className="max-w-2xl mx-auto">
+          <div className="flex items-center justify-between mb-10">
+            <span className="text-[10px] uppercase tracking-widest font-medium text-black/40">
+              AI Food Studio
+            </span>
+            <span className="bg-black text-[#FDE047] text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full font-semibold">
+              Gemini AI
+            </span>
+          </div>
+
+          <h1 className="text-7xl font-bold text-[#0A0A0A] tracking-tight leading-[0.9]">
+            음식 사진<br />AI 보정
+          </h1>
+          <p className="mt-5 text-black/50 text-sm leading-relaxed max-w-xs">
+            메뉴판용 음식 사진을 전문 푸드포토그래퍼 수준으로 보정해드립니다
           </p>
         </div>
+      </section>
+
+      {/* ── Dark Void Content ── */}
+      <div className="max-w-2xl mx-auto px-4 py-8 space-y-5">
 
         {/* Upload */}
         <UploadZone onFileReady={handleFileReady} disabled={isProcessing} />
 
-        {/* Controls — shown when file is uploaded */}
+        {/* Controls */}
         {hasFile && !isProcessing && appState !== 'done' && (
           <RetouchControls
             selectedStyle={selectedStyle}
@@ -94,13 +112,15 @@ export default function Home() {
 
         {/* Error */}
         {appState === 'error' && errorMessage && (
-          <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3">
-            <span className="text-xl">⚠️</span>
+          <div className="bg-white/5 border border-red-500/30 rounded-[32px] p-5 flex items-start gap-4">
+            <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-sm">⚠</span>
+            </div>
             <div className="flex-1">
-              <p className="text-red-700 font-medium text-sm">{errorMessage}</p>
+              <p className="text-red-400 font-medium text-sm">{errorMessage}</p>
               <button
                 onClick={handleRetry}
-                className="mt-2 text-sm text-red-500 underline hover:no-underline"
+                className="mt-2 text-xs text-white/40 hover:text-[#FDE047] transition-colors underline underline-offset-2"
               >
                 다시 시도
               </button>
@@ -126,7 +146,7 @@ export default function Home() {
         )}
 
         {/* Footer */}
-        <p className="text-center text-xs text-gray-400">
+        <p className="text-center text-[10px] text-white/15 uppercase tracking-widest pt-4">
           Powered by Google Gemini API
         </p>
       </div>

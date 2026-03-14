@@ -17,39 +17,47 @@ export default function RetouchControls({
 }: RetouchControlsProps) {
   return (
     <div className="space-y-4">
-      <p className="text-sm font-medium text-gray-600">보정 스타일 선택</p>
+      <p className="text-[10px] uppercase tracking-widest text-white/30 font-medium">
+        보정 스타일 선택
+      </p>
+
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-        {STYLE_OPTIONS.map((option) => (
-          <button
-            key={option.id}
-            onClick={() => onStyleChange(option.id)}
-            disabled={disabled}
-            className={`
-              flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all text-left
-              ${selectedStyle === option.id
-                ? 'border-orange-400 bg-orange-50 shadow-sm'
-                : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'}
-              ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-            `}
-          >
-            <span className="text-2xl">{option.emoji}</span>
-            <span className="text-xs font-semibold text-gray-800">{option.label}</span>
-            <span className="text-xs text-gray-500 text-center leading-tight">{option.description}</span>
-          </button>
-        ))}
+        {STYLE_OPTIONS.map((option) => {
+          const isSelected = selectedStyle === option.id;
+          return (
+            <button
+              key={option.id}
+              onClick={() => onStyleChange(option.id)}
+              disabled={disabled}
+              className={`
+                flex flex-col items-center gap-2 p-3 rounded-[24px] border transition-all duration-200 text-center
+                ${isSelected
+                  ? 'border-[#FDE047] bg-[#FDE047]/10 shadow-[0_0_20px_rgba(253,224,71,0.15)]'
+                  : 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20'}
+                ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer active:scale-95'}
+              `}
+            >
+              <span className="text-xl">{option.emoji}</span>
+              <span className={`text-xs font-semibold leading-tight ${isSelected ? 'text-[#FDE047]' : 'text-white/80'}`}>
+                {option.label}
+              </span>
+              <span className="text-[10px] text-white/30 leading-tight">{option.description}</span>
+            </button>
+          );
+        })}
       </div>
 
       <button
         onClick={onRetouch}
         disabled={disabled}
         className={`
-          w-full py-3.5 rounded-xl font-semibold text-white transition-all
+          w-full py-4 rounded-full font-bold text-sm tracking-wide transition-all duration-200
           ${disabled
-            ? 'bg-gray-300 cursor-not-allowed'
-            : 'bg-orange-500 hover:bg-orange-600 active:scale-[0.98] shadow-md hover:shadow-lg'}
+            ? 'bg-white/10 text-white/20 cursor-not-allowed'
+            : 'bg-[#FDE047] text-black hover:scale-[1.02] hover:shadow-[0_8px_30px_rgba(253,224,71,0.3)] active:scale-95'}
         `}
       >
-        ✨ AI로 음식 사진 보정하기
+        AI로 음식 사진 보정하기
       </button>
     </div>
   );

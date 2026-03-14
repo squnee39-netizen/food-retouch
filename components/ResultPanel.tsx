@@ -18,22 +18,28 @@ export default function ResultPanel({ enhancedBase64, mimeType, description, onR
   return (
     <div className="space-y-3">
       {description && (
-        <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
-          <p className="text-xs font-semibold text-orange-600 mb-1">AI 보정 내역</p>
-          <p className="text-sm text-gray-700 leading-relaxed">{description}</p>
+        <div className="bg-white/5 border border-white/10 rounded-[24px] p-4">
+          <p className="text-[10px] uppercase tracking-widest text-[#FDE047]/70 font-semibold mb-2">
+            AI 보정 내역
+          </p>
+          <p className="text-sm text-white/60 leading-relaxed">{description}</p>
         </div>
       )}
 
       <div className="flex gap-2">
         <button
           onClick={handleDownload}
-          className="flex-1 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-all active:scale-[0.98] shadow-md"
+          className="flex-1 py-4 rounded-full bg-[#FDE047] text-black font-bold text-sm tracking-wide
+            hover:scale-[1.02] hover:shadow-[0_8px_30px_rgba(253,224,71,0.3)]
+            active:scale-95 transition-all duration-200"
         >
-          ⬇ 보정된 사진 다운로드
+          보정된 사진 다운로드
         </button>
         <button
           onClick={onRetry}
-          className="px-4 py-3 rounded-xl border-2 border-gray-200 text-gray-600 hover:bg-gray-50 font-medium transition-all"
+          className="px-5 py-4 rounded-full border border-white/15 text-white/50
+            hover:bg-white/10 hover:text-white hover:border-white/30
+            font-medium text-sm transition-all duration-200 active:scale-95"
         >
           다시 보정
         </button>
