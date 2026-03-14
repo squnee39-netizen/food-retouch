@@ -3,48 +3,50 @@ import { retouchFoodPhoto } from '@/lib/gemini';
 import { RetouchRequest } from '@/types';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 
-const FREE_LIMIT = 3;
+const ANON_LIMIT = 3;   // 비로그인
+const AUTH_LIMIT = 10;  // 로그인
 
 export async function POST(req: NextRequest) {
   try {
-    // ── 1. 인증 확인 ──────────────────────────────────────────
     const supabase = await createServerSupabaseClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
 
-    if (authError || !user) {
-      return NextResponse.json(
-        { success: false, error: '로그인이 필요합니다.', code: 'UNAUTHORIZED' },
-        { status: 401 }
-      );
+    let currentCount = 0;
+    const limit = user ? AUTH_LIMIT : ANON_LIMIT;
+
+    // ── 로그인 사용자: Supabase DB ────────────────────────────
+    if (user) {
+      const { data: usage, error: usageError } = await supabase
+        .from('usage_counts')
+        .select('count')
+        .eq('user_id', user.id)
+        .single();
+
+      if (usageError && usageError.code !== 'PGRST116') throw usageError;
+      currentCount = usage?.count ?? 0;
+    } else {
+      // ── 비로그인: 쿠키 카운터 ─────────────────────────────
+      currentCount = parseInt(req.cookies.get('anon_count')?.value ?? '0', 10);
     }
 
-    // ── 2. 사용량 확인 ─────────────────────────────────────────
-    const { data: usage, error: usageError } = await supabase
-      .from('usage_counts')
-      .select('count')
-      .eq('user_id', user.id)
-      .single();
-
-    if (usageError && usageError.code !== 'PGRST116') {
-      throw usageError;
-    }
-
-    const currentCount = usage?.count ?? 0;
-
-    if (currentCount >= FREE_LIMIT) {
+    // ── 한도 초과 체크 ────────────────────────────────────────
+    if (currentCount >= limit) {
       return NextResponse.json(
         {
           success: false,
-          error: `무료 보정 횟수(${FREE_LIMIT}회)를 모두 사용했습니다.`,
+          error: user
+            ? `무료 보정 횟수(${limit}회)를 모두 사용했습니다.`
+            : `비로그인 무료 횟수(${limit}회)를 모두 사용했어요. 이메일 로그인 시 ${AUTH_LIMIT}회 제공!`,
           code: 'LIMIT_EXCEEDED',
           used: currentCount,
-          limit: FREE_LIMIT,
+          limit,
+          isAnon: !user,
         },
         { status: 403 }
       );
     }
 
-    // ── 3. 요청 유효성 검사 ────────────────────────────────────
+    // ── 요청 유효성 검사 ──────────────────────────────────────
     const body: RetouchRequest = await req.json();
 
     if (!body.imageBase64 || !body.mimeType || !body.style) {
@@ -62,33 +64,46 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ── 4. AI 보정 실행 ────────────────────────────────────────
-    const response = await retouchFoodPhoto(body);
-
-    if (!response.success) {
-      return NextResponse.json(response);
+    // ── AI 보정 실행 ──────────────────────────────────────────
+    const aiResponse = await retouchFoodPhoto(body);
+    if (!aiResponse.success) {
+      return NextResponse.json(aiResponse);
     }
 
-    // ── 5. 사용량 증가 (upsert) ────────────────────────────────
-    await supabase
-      .from('usage_counts')
-      .upsert(
-        {
-          user_id: user.id,
-          count: currentCount + 1,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: 'user_id' }
-      );
+    // ── 사용량 증가 ───────────────────────────────────────────
+    const newCount = currentCount + 1;
 
-    return NextResponse.json({
-      ...response,
+    if (user) {
+      await supabase
+        .from('usage_counts')
+        .upsert(
+          { user_id: user.id, count: newCount, updated_at: new Date().toISOString() },
+          { onConflict: 'user_id' }
+        );
+    }
+
+    const payload = {
+      ...aiResponse,
       usageInfo: {
-        used: currentCount + 1,
-        limit: FREE_LIMIT,
-        remaining: FREE_LIMIT - (currentCount + 1),
+        used: newCount,
+        limit,
+        remaining: limit - newCount,
+        isAnon: !user,
       },
-    });
+    };
+
+    // 비로그인: 쿠키 카운터 업데이트
+    if (!user) {
+      const res = NextResponse.json(payload);
+      res.cookies.set('anon_count', String(newCount), {
+        maxAge: 60 * 60 * 24 * 30, // 30일
+        path: '/',
+        sameSite: 'lax',
+      });
+      return res;
+    }
+
+    return NextResponse.json(payload);
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.';
     return NextResponse.json({ success: false, error: message }, { status: 500 });
