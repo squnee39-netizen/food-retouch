@@ -14,176 +14,200 @@ Analyze the image: identify the main dish, current dishware, background, and any
 export const RETOUCH_PROMPTS: Record<RetouchStyle, string> = {
 
   // ──────────────────────────────────────────────────
-  // STYLE 1: CLEAN FLAT LAY  (낙곱새 스타일)
+  // STYLE 1: 카페 & 디저트
   // ──────────────────────────────────────────────────
   appetizing: `
-You are a professional Korean food photographer specializing in clean, modern menu photography.
+You are a professional food photographer specializing in modern Korean cafe and dessert photography.
 
 ${FOOD_DETECTION}
 
-## PHOTOGRAPHY STYLE: CLEAN FLAT LAY MENU SHOT
-Reference: Top Korean food delivery app hero images, franchise restaurant menu boards.
+## PHOTOGRAPHY STYLE: CAFE & DESSERT
+Reference: Seoul specialty cafe menus, Instagram-worthy dessert shots, Hongdae/Yeonnam-dong cafe aesthetic.
 
-BACKGROUND: Smooth light warm grey or off-white seamless surface. Clean, minimal, uncluttered.
+BACKGROUND: White or light grey marble surface, OR light natural oak wood table. Clean, bright, airy.
 
-CAMERA ANGLE: Pure overhead top-down (90-degree flat lay). The entire dish should be visible from directly above.
-
-DISHWARE: Clean round white ceramic bowl or plate appropriate to the dish. For soups: white ceramic bowl with handles. For fried/grilled: white round plate.
-
-PROPS (minimal):
-- One pair of wooden chopsticks placed parallel above the bowl
-- One wooden spoon beside the chopsticks
-- If the dish has a sauce, place it in a small white ceramic dish nearby
-- NO cluttered ingredients, NO rustic props — minimal and intentional only
-
-LIGHTING: Bright, even, diffused overhead studio lighting. Near-shadowless. Clean and clinical.
-
-COLOR: Bright, clean, slightly warm. Accurate food colors, moderate saturation boost. Crisp clean whites.
-
-COMPOSITION: Centered main dish, symmetrical, generous negative space around the food.
-
-OUTPUT: Clean, professional top-down Korean menu photograph. Simple, modern, and immediately appetizing.
-  `.trim(),
-
-  // ──────────────────────────────────────────────────
-  // STYLE 2: BOLD COLOR-BLOCKED  (딱돼지/후라이드집 스타일)
-  // ──────────────────────────────────────────────────
-  rustic: `
-You are a professional Korean food photographer specializing in bold, brand-forward food photography.
-
-${FOOD_DETECTION}
-
-## PHOTOGRAPHY STYLE: BOLD COLOR-BLOCKED BRAND PHOTOGRAPHY
-Reference: @딱돼지, @후라이드집 — bright solid color backgrounds, punchy and energetic, Korean casual dining brand style.
-
-BACKGROUND: Single bold solid color — choose based on food:
-- Fried chicken, pork, meat dishes → bright yellow (#FFD700) or vivid red
-- Seafood → bright cobalt blue or coral
-- Korean fusion/street food → bold orange or mustard yellow
-The background is a single flat saturated color, no texture.
-
-CAMERA ANGLE: 45-degree elevated angle. Close enough that food fills most of the frame. Food should look abundant and piled high.
+CAMERA ANGLE:
+- For drinks (latte, ade, smoothie): 45-degree angle to show latte art and glass layers
+- For cakes, tarts, pastries: 45-degree side angle to reveal beautiful cross-section layers
+- For flat items (cookies, macarons): top-down overhead
 
 DISHWARE:
-- Stainless steel round plates or trays (한식당 feel)
-- OR retro-style plates with bold colored rims
-- Stainless steel dipping cups for sauces
+- Matte white ceramic plates for cakes and pastries
+- Clear glass cups/tumblers for cold drinks showing layered colors
+- Ceramic mugs with latte art for hot drinks
+- Small wooden or slate boards under pastries for texture
 
-PROPS: 1-2 small stainless sauce cups beside the plate. Checkered paper liner under fried items. Nothing else.
+PROPS (light and minimal):
+- Small dried or fresh flowers beside the plate
+- Scattered coffee beans or cinnamon stick for coffee items
+- Small silver dessert fork placed beside cake
+- Linen napkin softly folded in one corner
+- Fresh mint or edible flowers as garnish on desserts
 
-LIGHTING: Bright, punchy studio lighting. Strong key light creating slight dimensional shadows. Energetic and vibrant.
+LIGHTING: Bright, soft natural window light from the side. Airy and clean. Slight warmth. No harsh shadows — diffused and dreamy.
 
-COLOR: High saturation throughout. Background color fully saturated. Food colors (golden fried, red sauces, rich browns) contrast boldly against background.
+COLOR: Bright, clean, slightly warm pastel tones. Creamy whites, soft beiges, pops of color from fruits or sauces. High clarity.
 
-OUTPUT: Bold, brand-forward Korean food photograph with vivid solid-color background. Energetic, casual, and memorable — Korean franchise brand photography style.
+OUTPUT: Bright, beautiful Korean cafe-style food photograph. Dreamy, Instagram-worthy, and immediately inviting. Modern Seoul specialty cafe menu quality.
   `.trim(),
 
   // ──────────────────────────────────────────────────
-  // STYLE 3: PREMIUM DARK STONE  (고급 일식/파인다이닝 스타일)
+  // STYLE 2: 양식 (Western / European)
+  // ──────────────────────────────────────────────────
+  rustic: `
+You are a professional food photographer specializing in Western and European restaurant photography.
+
+${FOOD_DETECTION}
+
+## PHOTOGRAPHY STYLE: WESTERN / EUROPEAN FINE CASUAL DINING
+Reference: European bistro menus, Italian trattoria, modern Western restaurant editorial shots.
+
+BACKGROUND: Dark walnut wood table, OR white linen tablecloth with subtle texture. Sophisticated and warm.
+
+CAMERA ANGLE: 45-degree elevated angle showing the full plate composition. Close enough to see texture and sauce work.
+
+DISHWARE:
+- Large round white ceramic plates (restaurant-grade, wide rim) for mains
+- White pasta bowls (shallow wide) for pasta and risotto
+- Small white ramekins for sauces or soups
+- Wooden boards for bread, charcuterie, or pizza
+
+PROPS:
+- Silver or brushed-steel fork and knife placed to the left and right of the plate
+- Wine glass with red or white wine partially visible in background
+- Fresh herb sprig (rosemary, thyme, basil) as garnish on or beside the dish
+- Rustic bread roll or breadstick in background
+- Small white candle or olive oil bottle softly out of focus
+
+SAUCE & GARNISH: Elegant sauce drizzle or swipe on the plate. Fresh microgreens or herb oil drops as finishing. Parmesan shavings if appropriate.
+
+LIGHTING: Warm, moody restaurant interior light — like candlelight mixed with soft overhead spotlights. One directional key light from upper left. Rich shadows for depth and drama.
+
+COLOR: Warm, rich, deep. Caramelized golden browns, deep red sauces, vibrant greens against warm backgrounds. Sophisticated and appetizing.
+
+OUTPUT: Elegant European/Western restaurant food photograph. Continental bistro quality — warm, sophisticated, and mouth-wateringly professional.
+  `.trim(),
+
+  // ──────────────────────────────────────────────────
+  // STYLE 3: 한식 (Traditional Korean)
   // ──────────────────────────────────────────────────
   fineDining: `
-You are a professional food photographer specializing in premium Korean and Japanese restaurant photography.
+You are a professional food photographer specializing in traditional and modern Korean cuisine photography.
 
 ${FOOD_DETECTION}
 
-## PHOTOGRAPHY STYLE: PREMIUM DARK STONE FINE DINING
-Reference: Upscale Korean/Japanese restaurant menus — dark charcoal stone, elegant precision, editorial quality.
+## PHOTOGRAPHY STYLE: KOREAN CUISINE (한식)
+Reference: Premium Korean restaurant menus, Korean food magazine editorials, traditional dining hall (한정식) presentation.
 
-BACKGROUND: Dark charcoal grey stone or slate surface. Rough, textured, premium. The texture should be visible and add depth.
+BACKGROUND: Traditional lacquered wooden tray (소반) surface in dark brown or black, OR warm natural wood grain table. Subtle Korean aesthetics.
 
-CAMERA ANGLE: Pure overhead flat lay OR slight 30-degree angle for dishes with height.
+CAMERA ANGLE: 45-degree elevated angle showing the full 한상 (Korean table) spread. Include multiple banchan dishes around the main dish.
 
-DISHWARE — replace all current dishware with:
-- Patterned blue-and-white ceramic plates (청화백자 style) for seafood/sashimi
-- Matte black ceramic bowls for Korean dishes
-- White speckled ceramic plates for single dishes
-- Lacquered bento box for set meals
-- Wooden charger plate or bamboo mat strip as base accessory
+DISHWARE — all Korean traditional:
+- White or celadon (청자) ceramic bowls for soups and rice
+- Patterned blue-and-white porcelain (청화백자) plates for main dishes
+- Brass or silver metal bowls (놋그릇) for side dishes
+- Small ceramic banchan dishes arranged in a grid pattern
+- Lacquered wooden chopstick rest
 
-PROPS (precise and minimal):
-- Dark wooden or black lacquer chopsticks
-- Small ceramic condiment dishes (soy sauce, wasabi)
-- Single garnish flower or microgreens as color accent
-- Bamboo mat strip in one corner for texture
-- Everything measured and intentional — NO ingredient explosions
+PROPS:
+- Korean brass/silver chopsticks and long spoon placed to the right
+- Small ceramic kimchi pot or jar softly in background
+- A few banchan dishes (kimchi, namul, jeon) arranged around the main dish
+- Folded white linen napkin
+- Small ceramic soy sauce or gochujang dish
 
-LIGHTING: Soft, directional studio lighting from one side. Gentle shadows showing texture and depth. Background near-black, food lit precisely and beautifully.
+LIGHTING: Warm, natural indoor lighting — like traditional Korean dining room light. Soft but clear illumination. Gentle shadows. Warm golden tone.
 
-COLOR: Rich, deep, sophisticated. Dark background with jewel-toned food colors. Sauces: deep glossy. Greens: vivid against dark surface.
+COLOR: Warm, natural Korean food palette — vivid reds of kimchi and gochujang, deep greens of namul, golden-brown grilled items, creamy whites of rice and tofu. Rich and inviting.
 
-COMPOSITION: Precise placement, intentional asymmetry for elegance, multiple small dishes with visual balance.
+BANCHAN ARRANGEMENT: If space allows, show 3-5 banchan dishes arranged symmetrically around the main dish — this is the signature of Korean dining.
 
-OUTPUT: Dramatic, sophisticated premium restaurant food photograph on dark stone. Upscale Korean or Japanese restaurant menu quality.
+OUTPUT: Authentic, beautiful Korean cuisine photograph showing the full richness of Korean table culture. Premium Korean restaurant or food magazine quality.
   `.trim(),
 
   // ──────────────────────────────────────────────────
-  // STYLE 4: MODERN KOREAN BBQ  (고기집 전문점 스타일)
+  // STYLE 4: 일식 (Japanese)
   // ──────────────────────────────────────────────────
   fresh: `
-You are a professional food photographer specializing in modern Korean BBQ and casual Korean restaurant photography.
+You are a professional food photographer specializing in Japanese cuisine photography.
 
 ${FOOD_DETECTION}
 
-## PHOTOGRAPHY STYLE: MODERN KOREAN BBQ RESTAURANT
-Reference: Modern Korean BBQ franchise menus — light grey concrete surface, dark ceramic dishware, wooden serving boards, organized and abundant spread.
+## PHOTOGRAPHY STYLE: JAPANESE CUISINE (일식)
+Reference: Japanese restaurant menus, omakase presentation, Michelin-level Japanese editorial food photography.
 
-BACKGROUND: Light grey concrete or pale grey stone surface — clean, modern, slightly cool-toned.
+BACKGROUND: Dark grey slate stone, OR black lacquered surface, OR pale natural hinoki wood. Clean, minimal, meditative.
 
-CAMERA ANGLE: 45-degree elevated showing the full spread of multiple dishes. OR top-down flat lay for single hero dishes.
+CAMERA ANGLE:
+- Sashimi/sushi: pure top-down flat lay showing the arrangement
+- Ramen/udon/soba: 45-degree angle showing broth depth and toppings
+- Bento/set meal: pure overhead to show compartment arrangement
 
-DISHWARE — replace current dishware with:
-- Dark matte black ceramic plates and bowls
-- Round dark stone plates for meat dishes
-- Wooden circular serving boards (acacia/walnut) as risers under some dishes
-- Small dark ceramic dipping bowls for sauces
+DISHWARE — authentic Japanese:
+- Dark slate or black ceramic plates for sashimi and nigiri
+- Wooden sushi geta (わらじ) for sushi platters
+- White porcelain with blue painting for hot dishes
+- Lacquered black bento boxes with dividers
+- Small ceramic cups for soy sauce with bamboo chopstick rest
 
-PROPS:
-- Wooden chopsticks and long metal tongs placed naturally beside dishes
-- Small dark ceramic cups for dipping sauces (gochujang, sesame oil)
-- Small tabletop grill in background if meat dish — add gentle smoke effect
-- Pull back enough to show 2-3 dishes together in a meal spread
+PROPS (extreme minimalism):
+- Single Japanese bamboo chopsticks on a ceramic rest
+- Small ceramic soy sauce dish with a drop of sauce
+- One strip of bamboo mat (竹) in one corner
+- Single shiso leaf, wasabi quenelle, or citrus twist as garnish
+- Nothing more — Japanese minimalism is the rule
 
-LIGHTING: Clean, neutral studio lighting — slightly cooler tone. Even illumination showing food textures clearly. Subtle shadows for depth without drama.
+GARNISH: Precise, minimal: thin green onion julienne, microgreens, yuzu zest, nori strip, sesame seeds — applied with surgical precision.
 
-COLOR: Cool-neutral to slightly warm. Dark plates contrast beautifully with light grey surface. Meat: caramelized golden browns and deep reds. Greens: vivid pop.
+LIGHTING: Soft, directional side lighting from one source. Clean, cool-to-neutral tone. Subtle shadows that reveal texture and depth. No warm orange — cool and precise.
 
-OUTPUT: Clean, modern Korean BBQ restaurant menu photograph. Organized, abundant, professionally styled. Top Korean BBQ franchise menu board quality.
+COLOR: Cool, clean, refined. Deep blacks and greys of the surface contrast with bright whites of rice, vivid reds of tuna/salmon, vibrant greens of wasabi and shiso.
+
+OUTPUT: Minimalist, precise Japanese cuisine photograph. Omakase/kaiseki restaurant quality — serene, elegant, and impeccably composed.
   `.trim(),
 
   // ──────────────────────────────────────────────────
-  // STYLE 5: RUSTIC KOREAN PUB  (황동 그릇 포장마차 스타일)
+  // STYLE 5: 고기집 (Korean BBQ / Meat Restaurant)
   // ──────────────────────────────────────────────────
   vibrant: `
-You are a professional food photographer specializing in rustic Korean pub and traditional restaurant photography.
+You are a professional food photographer specializing in Korean BBQ and meat restaurant photography.
 
 ${FOOD_DETECTION}
 
-## PHOTOGRAPHY STYLE: RUSTIC KOREAN PUB (포장마차/황동 그릇 스타일)
-Reference: Korean pojangmacha and traditional dining — brass/gold dishware, dark burgundy tablecloth, warm amber lighting, abundant communal spread.
+## PHOTOGRAPHY STYLE: KOREAN BBQ / MEAT RESTAURANT (고기집)
+Reference: Premium Korean BBQ franchise menus (삼겹살, 소고기 전문점) — charcoal grill, sizzling meat, abundant spread.
 
-BACKGROUND: Dark burgundy, deep brown, or dark mauve fabric tablecloth — rich, warm, textured. Small wooden serving boards or bamboo chopstick holders on the surface.
+BACKGROUND: Dark stone or dark wood table surface with a built-in charcoal grill in the center. The grill should be the focal hero element.
 
-DISHWARE — KEY VISUAL ELEMENT — replace ALL dishware with:
-- **Brass/gold (황동) bowls and plates** — this is the signature of this style
-- Large round brass plates for pancakes (전), grilled items
-- Brass bowls for side dishes and soup
-- Metal serving grill (석쇠) on legs for grilled items
-- The gold/brass tone against dark tablecloth creates the signature look
+CAMERA ANGLE: 45-degree elevated angle showing the full table: grill in center, raw meat platter beside it, banchan dishes arranged around.
 
-PROPS:
-- Wooden spoon and chopsticks set
-- Small brass or ceramic dipping sauce bowls
-- A brass or ceramic cup (막걸리/소주 cup) in the background
-- Multiple dishes spread across the table — abundant, communal, sharing-style
-- The spread should look generous and inviting
+GRILL SETUP (KEY ELEMENT):
+- Show a round or rectangular charcoal grill (참숯 화로) in the center of frame
+- Grill grate (석쇠) over glowing red/orange charcoal — charcoal embers visible
+- Meat on the grill showing beautiful grill marks and sizzling
+- Add visible heat shimmer and light smoke effect rising from the grill
+- Some meat partially cooked on grill, some raw on a side plate — showing the process
 
-CAMERA ANGLE: 45-degree elevated side angle showing the full table spread. Pull back to show abundance. OR slightly lower angle to make brass dishware gleam.
+MEAT PRESENTATION:
+- Premium cuts displayed on dark slate or wooden board beside the grill
+- Samgyeopsal (삼겹살): thick slices with visible fat layers
+- Beef (소고기): marbled cuts showing premium quality
+- Meat should look fresh, glistening, high quality
 
-LIGHTING: Warm amber studio lighting — like candlelight or warm restaurant interior light. The brass/gold dishware should catch and reflect the warm light, creating beautiful gleam and sheen.
+DISHWARE:
+- Dark stone or matte black plates for raw meat
+- Small dark ceramic banchan dishes around the grill
+- Metal scissors and long tongs placed naturally near the grill
+- Stainless steel dipping bowls for sesame oil and salt
 
-COLOR: Deep, warm, rich — burgundy and gold dominate. Food: vivid reds, warm caramel browns, bright greens against dark background. High contrast. Brass should glow warmly.
+BANCHAN: Arrange 4-6 banchan dishes around the grill — kimchi, lettuce wraps, garlic, green onion salad, sliced onion.
 
-OUTPUT: Warm, dramatic, abundant Korean pub/traditional restaurant photograph with signature brass dishware on dark fabric. The brass dishware gleaming under warm light is the hero visual element.
+LIGHTING: Warm, dramatic — the glowing charcoal adds warm orange glow from below. Overhead warm spotlighting. The charcoal glow should light the meat from beneath, creating a dramatic, appetite-triggering glow.
+
+COLOR: Warm, rich, dramatic. Glowing orange charcoal. Caramelized brown-gold sizzling meat. Vivid reds of kimchi and raw meat. Dark, atmospheric background.
+
+OUTPUT: Dramatic, appetite-triggering Korean BBQ meat restaurant photograph. The sizzling grill with glowing charcoal and premium meat is the hero. Premium Korean BBQ franchise menu quality.
   `.trim(),
 
 };
