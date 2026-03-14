@@ -31,20 +31,15 @@ export default function BeforeAfterSlider({ beforeUrl, afterBase64, afterMimeTyp
     updatePosition(e.clientX);
   };
 
-  const handlePointerUp = () => {
-    isDragging.current = false;
-  };
+  const handlePointerUp = () => { isDragging.current = false; };
 
-  // Touch events for mobile
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-
     const handleTouchMove = (e: TouchEvent) => {
       e.preventDefault();
       updatePosition(e.touches[0].clientX);
     };
-
     container.addEventListener('touchmove', handleTouchMove, { passive: false });
     return () => container.removeEventListener('touchmove', handleTouchMove);
   }, [updatePosition]);
@@ -52,7 +47,10 @@ export default function BeforeAfterSlider({ beforeUrl, afterBase64, afterMimeTyp
   const afterSrc = `data:${afterMimeType};base64,${afterBase64}`;
 
   return (
-    <div className="rounded-2xl overflow-hidden shadow-lg">
+    <div
+      className="overflow-hidden shadow-clay-card"
+      style={{ borderRadius: '32px' }}
+    >
       <div
         ref={containerRef}
         className="relative w-full aspect-[4/3] select-none cursor-col-resize"
@@ -60,7 +58,7 @@ export default function BeforeAfterSlider({ beforeUrl, afterBase64, afterMimeTyp
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
       >
-        {/* Before image (base layer) */}
+        {/* Before image */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={beforeUrl}
@@ -69,11 +67,8 @@ export default function BeforeAfterSlider({ beforeUrl, afterBase64, afterMimeTyp
           draggable={false}
         />
 
-        {/* After image (clipped overlay) */}
-        <div
-          className="absolute inset-0 overflow-hidden"
-          style={{ width: `${position}%` }}
-        >
+        {/* After image (clipped) */}
+        <div className="absolute inset-0 overflow-hidden" style={{ width: `${position}%` }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={afterSrc}
@@ -84,26 +79,52 @@ export default function BeforeAfterSlider({ beforeUrl, afterBase64, afterMimeTyp
           />
         </div>
 
-        {/* Divider line */}
+        {/* Divider */}
         <div
-          className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_8px_rgba(0,0,0,0.5)]"
-          style={{ left: `calc(${position}% - 1px)` }}
+          className="absolute top-0 bottom-0 w-0.5"
+          style={{
+            left: `calc(${position}% - 1px)`,
+            background: 'rgba(255,255,255,0.9)',
+            boxShadow: '0 0 12px rgba(124,58,237,0.4)',
+          }}
         />
 
-        {/* Handle */}
+        {/* Clay handle */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center gap-0.5"
-          style={{ left: `${position}%` }}
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-12 rounded-full flex items-center justify-center"
+          style={{
+            left: `${position}%`,
+            background: 'rgba(255,255,255,0.95)',
+            boxShadow: '8px 8px 16px rgba(139,92,246,0.25), -6px -6px 12px rgba(255,255,255,0.9), inset 3px 3px 6px rgba(255,255,255,0.6), inset -3px -3px 6px rgba(0,0,0,0.06)',
+          }}
         >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M4 2L1 7L4 12" stroke="#374151" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M10 2L13 7L10 12" stroke="#374151" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M5 3L2 8L5 13" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M11 3L14 8L11 13" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
 
         {/* Labels */}
-        <div className="absolute top-3 left-3 bg-black/60 text-white text-xs px-2 py-1 rounded-full">원본</div>
-        <div className="absolute top-3 right-3 bg-orange-500 text-white text-xs px-2 py-1 rounded-full">AI 보정</div>
+        <div
+          className="absolute top-3 left-3 text-white text-xs px-3 py-1.5 rounded-full font-bold"
+          style={{
+            background: 'rgba(50,45,60,0.7)',
+            backdropFilter: 'blur(8px)',
+            fontFamily: 'DM Sans, sans-serif',
+          }}
+        >
+          원본
+        </div>
+        <div
+          className="absolute top-3 right-3 text-white text-xs px-3 py-1.5 rounded-full font-bold"
+          style={{
+            background: 'linear-gradient(135deg, #A78BFA, #7C3AED)',
+            boxShadow: '4px 4px 8px rgba(139,92,246,0.3)',
+            fontFamily: 'DM Sans, sans-serif',
+          }}
+        >
+          AI 보정
+        </div>
       </div>
     </div>
   );

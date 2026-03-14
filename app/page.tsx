@@ -30,16 +30,11 @@ export default function Home() {
     if (!originalBase64) return;
     setAppState('processing');
     setErrorMessage(null);
-
     try {
       const res = await fetch('/api/retouch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          imageBase64: originalBase64,
-          mimeType: originalMimeType,
-          style: selectedStyle,
-        }),
+        body: JSON.stringify({ imageBase64: originalBase64, mimeType: originalMimeType, style: selectedStyle }),
       });
       const data: RetouchResponse = await res.json();
       if (data.success) {
@@ -65,39 +60,45 @@ export default function Home() {
   const hasFile = !!originalBase64;
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A]">
+    <main className="min-h-screen" style={{ background: '#F4F1FA' }}>
 
-      {/* ── Liquid Hero Section ── */}
-      <section
-        className="bg-[#FDE047] px-6 pt-10 pb-20"
-        style={{ borderRadius: '0 0 80px 40px' }}
-      >
-        <div className="max-w-2xl mx-auto">
-          <div className="flex items-center justify-between mb-10">
-            <span className="text-[10px] uppercase tracking-widest font-medium text-black/40">
-              AI Food Studio
-            </span>
-            <span className="bg-black text-[#FDE047] text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full font-semibold">
-              Gemini AI
-            </span>
+      {/* ── Floating Background Blobs ── */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden -z-10">
+        <div className="absolute h-[60vh] w-[60vh] rounded-full blur-3xl animate-clay-float"
+          style={{ background: 'rgba(139,92,246,0.1)', top: '-10%', left: '-10%' }} />
+        <div className="absolute h-[50vh] w-[50vh] rounded-full blur-3xl animate-clay-float-delayed"
+          style={{ background: 'rgba(219,39,119,0.08)', top: '20%', right: '-10%' }} />
+        <div className="absolute h-[45vh] w-[45vh] rounded-full blur-3xl animate-clay-float-slow"
+          style={{ background: 'rgba(14,165,233,0.08)', bottom: '5%', left: '20%' }} />
+      </div>
+
+      <div className="max-w-lg mx-auto px-4 py-10 space-y-5">
+
+        {/* ── Hero Header ── */}
+        <div className="text-center space-y-3 pb-2">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full shadow-clay-button"
+            style={{ background: 'linear-gradient(135deg, #A78BFA, #7C3AED)', fontFamily: 'DM Sans, sans-serif' }}>
+            <span className="text-sm">✨</span>
+            <span className="text-white text-xs font-bold tracking-wide uppercase">Gemini AI</span>
           </div>
 
-          <h1 className="text-7xl font-bold text-[#0A0A0A] tracking-tight leading-[0.9]">
-            음식 사진<br />AI 보정
+          <h1 className="text-5xl font-black tracking-tight leading-[1.1]"
+            style={{ fontFamily: 'Nunito, sans-serif', color: '#332F3A' }}>
+            음식 사진<br />
+            <span style={{ background: 'linear-gradient(135deg, #7C3AED 20%, #DB2777 80%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              AI 보정
+            </span>
           </h1>
-          <p className="mt-5 text-black/50 text-sm leading-relaxed max-w-xs">
+          <p className="text-sm leading-relaxed max-w-xs mx-auto" style={{ color: '#635F69', fontFamily: 'DM Sans, sans-serif' }}>
             메뉴판용 음식 사진을 전문 푸드포토그래퍼 수준으로 보정해드립니다
           </p>
         </div>
-      </section>
 
-      {/* ── Dark Void Content ── */}
-      <div className="max-w-2xl mx-auto px-4 py-8 space-y-5">
-
-        {/* Upload */}
+        {/* ── Upload Zone ── */}
         <UploadZone onFileReady={handleFileReady} disabled={isProcessing} />
 
-        {/* Controls */}
+        {/* ── Retouch Controls ── */}
         {hasFile && !isProcessing && appState !== 'done' && (
           <RetouchControls
             selectedStyle={selectedStyle}
@@ -107,20 +108,25 @@ export default function Home() {
           />
         )}
 
-        {/* Loading */}
+        {/* ── Loading ── */}
         {isProcessing && <LoadingOverlay />}
 
-        {/* Error */}
+        {/* ── Error ── */}
         {appState === 'error' && errorMessage && (
-          <div className="bg-white/5 border border-red-500/30 rounded-[32px] p-5 flex items-start gap-4">
-            <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-sm">⚠</span>
+          <div className="rounded-[28px] p-5 flex items-start gap-4 backdrop-blur-xl shadow-clay-card"
+            style={{ background: 'rgba(255,255,255,0.7)' }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-clay-button"
+              style={{ background: 'linear-gradient(135deg, #fca5a5, #ef4444)' }}>
+              <span className="text-white text-sm">⚠</span>
             </div>
             <div className="flex-1">
-              <p className="text-red-400 font-medium text-sm">{errorMessage}</p>
+              <p className="font-bold text-sm" style={{ color: '#ef4444', fontFamily: 'Nunito, sans-serif' }}>
+                {errorMessage}
+              </p>
               <button
                 onClick={handleRetry}
-                className="mt-2 text-xs text-white/40 hover:text-[#FDE047] transition-colors underline underline-offset-2"
+                className="mt-2 text-xs font-medium underline underline-offset-2 transition-colors"
+                style={{ color: '#7C3AED' }}
               >
                 다시 시도
               </button>
@@ -128,7 +134,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Result */}
+        {/* ── Result ── */}
         {appState === 'done' && result?.enhancedImageBase64 && originalPreviewUrl && (
           <div className="space-y-4">
             <BeforeAfterSlider
@@ -145,8 +151,8 @@ export default function Home() {
           </div>
         )}
 
-        {/* Footer */}
-        <p className="text-center text-[10px] text-white/15 uppercase tracking-widest pt-4">
+        {/* ── Footer ── */}
+        <p className="text-center text-[10px] uppercase tracking-widest pb-4" style={{ color: '#635F69', opacity: 0.5 }}>
           Powered by Google Gemini API
         </p>
       </div>

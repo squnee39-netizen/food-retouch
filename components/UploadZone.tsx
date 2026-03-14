@@ -59,14 +59,20 @@ export default function UploadZone({ onFileReady, disabled }: UploadZoneProps) {
       onClick={() => !disabled && !loading && inputRef.current?.click()}
       className={`
         relative flex flex-col items-center justify-center
-        rounded-[32px] border transition-all duration-300 cursor-pointer select-none overflow-hidden
+        rounded-[32px] transition-all duration-300 cursor-pointer select-none overflow-hidden
         backdrop-blur-xl
-        ${isDragging
-          ? 'border-[#FDE047] bg-[#FDE047]/10'
-          : 'border-white/20 bg-white/10 hover:bg-white/15 hover:border-white/30'}
+        ${preview ? 'h-72' : 'h-60'}
         ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
-        ${preview ? 'h-72' : 'h-64'}
       `}
+      style={{
+        background: isDragging
+          ? 'rgba(124,58,237,0.08)'
+          : 'rgba(255,255,255,0.7)',
+        boxShadow: isDragging
+          ? '16px 16px 32px rgba(124,58,237,0.15), -10px -10px 24px rgba(255,255,255,0.9), inset 10px 10px 20px rgba(124,58,237,0.08), inset -10px -10px 20px rgba(255,255,255,0.6)'
+          : '16px 16px 32px rgba(160,150,180,0.2), -10px -10px 24px rgba(255,255,255,0.9), inset 6px 6px 12px rgba(139,92,246,0.03), inset -6px -6px 12px rgba(255,255,255,1)',
+        outline: isDragging ? '2px solid rgba(124,58,237,0.4)' : '2px solid transparent',
+      }}
     >
       <input
         ref={inputRef}
@@ -85,32 +91,42 @@ export default function UploadZone({ onFileReady, disabled }: UploadZoneProps) {
             alt="업로드된 음식 사진"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-            <div className="bg-[#FDE047] text-black text-xs font-semibold px-4 py-2 rounded-full">
-              사진 변경하기
+          <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300"
+            style={{ background: 'rgba(124,58,237,0.55)', backdropFilter: 'blur(4px)' }}>
+            <div className="px-5 py-2.5 rounded-full font-bold text-xs text-white shadow-clay-button"
+              style={{ background: 'linear-gradient(135deg, #A78BFA, #7C3AED)', fontFamily: 'DM Sans, sans-serif' }}>
+              📷 사진 변경하기
             </div>
           </div>
         </>
       ) : (
         <div className="flex flex-col items-center gap-4 px-6 text-center">
           {loading ? (
-            <div className="w-10 h-10 border-2 border-[#FDE047] border-t-transparent rounded-full animate-spin" />
+            <div className="w-12 h-12 rounded-full border-2 border-t-transparent animate-spin"
+              style={{ borderColor: 'rgba(124,58,237,0.3)', borderTopColor: '#7C3AED' }} />
           ) : (
-            <div className="w-14 h-14 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-2xl animate-float">
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center text-2xl animate-clay-breathe"
+              style={{
+                background: 'linear-gradient(135deg, #C4B5FD, #7C3AED)',
+                boxShadow: '12px 12px 24px rgba(139,92,246,0.3), -8px -8px 16px rgba(255,255,255,0.4), inset 4px 4px 8px rgba(255,255,255,0.4)',
+              }}
+            >
               📷
             </div>
           )}
           <div>
-            <p className="text-white font-medium text-sm">
+            <p className="font-bold text-sm" style={{ color: '#332F3A', fontFamily: 'Nunito, sans-serif' }}>
               {loading ? '이미지 처리 중...' : '음식 사진을 드래그하거나 클릭'}
             </p>
-            <p className="text-white/30 text-xs mt-1">JPG · PNG · WEBP · 최대 20MB</p>
+            <p className="text-xs mt-1" style={{ color: '#635F69' }}>JPG · PNG · WEBP · 최대 20MB</p>
           </div>
         </div>
       )}
 
       {error && (
-        <div className="absolute bottom-0 left-0 right-0 bg-red-500/80 backdrop-blur-sm text-white text-xs text-center py-2.5 font-medium">
+        <div className="absolute bottom-0 left-0 right-0 text-white text-xs text-center py-3 font-semibold rounded-b-[32px]"
+          style={{ background: 'rgba(239,68,68,0.85)', backdropFilter: 'blur(8px)' }}>
           {error}
         </div>
       )}
