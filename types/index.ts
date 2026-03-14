@@ -21,6 +21,52 @@ export interface RetouchResponse {
 
 export type AppState = 'idle' | 'processing' | 'done' | 'error';
 
+export type PlatformId = 'baemin' | 'coupang' | 'naver' | 'instagram';
+
+export interface PlatformOption {
+  id: PlatformId;
+  label: string;
+  emoji: string;
+  width: number;
+  height: number;
+  description: string;
+}
+
+export const PLATFORM_OPTIONS: PlatformOption[] = [
+  {
+    id: 'baemin',
+    label: '배달의민족',
+    emoji: '🛵',
+    width: 1000,
+    height: 1000,
+    description: '1:1 정사각형 · 1000×1000px',
+  },
+  {
+    id: 'coupang',
+    label: '쿠팡이츠',
+    emoji: '🟡',
+    width: 800,
+    height: 800,
+    description: '1:1 정사각형 · 800×800px',
+  },
+  {
+    id: 'naver',
+    label: '네이버플레이스',
+    emoji: '🟢',
+    width: 1080,
+    height: 1080,
+    description: '1:1 정사각형 · 1080×1080px',
+  },
+  {
+    id: 'instagram',
+    label: '인스타그램',
+    emoji: '📸',
+    width: 1080,
+    height: 1350,
+    description: '4:5 세로형 · 1080×1350px',
+  },
+];
+
 export interface StyleOption {
   id: RetouchStyle;
   label: string;
